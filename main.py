@@ -34,8 +34,11 @@ async def say_hello(name: str):
 
 @app.post("/users")
 async def create_user(user: UserBaseModel):
+
+    hashed_password = User.create_password(user.password)
+
     user = User.create(
         username=user.username,
-        password=user.password
+        password=hashed_password
     )
     return user.id
