@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import FastAPI, HTTPException
 from database import database as connection
 from database import User, Movie, Review
@@ -55,6 +57,23 @@ async def create_movie(movie: MovieRequestModel):
     return new_movie
 
 
+@app.get("/movies", response_model=List[MovieResponseModel])
+async def get_movies():
+    movies = Movie.select()
+
+    return list(movies)
+
+
+@app.get("/movies/{movie_id}", response_model=MovieResponseModel)
+async def get_movie(movie_id: int):
+    movie = Movie.select().where(Movie.id == movie_id).first()
+
+    if movie is None:
+        raise HTTPException(404, "Review not found")
+
+    return movie
+
+
 @app.post("/reviews", response_model=ReviewResponseModel)
 async def create_review(user_review: ReviewRequestModel):
     if User.select().where(User.id == user_review.user_id).first() is None:
@@ -69,5 +88,22 @@ async def create_review(user_review: ReviewRequestModel):
         review_text=user_review.review_text,
         score=user_review.score
     )
+
+    return review
+
+
+@app.get("/reviews", response_model=List[ReviewResponseModel])
+async def get_reviews():
+    reviews = Review.select()
+
+    return list(reviews)
+
+
+@app.get("/reviews/{review_id}", response_model=ReviewResponseModel)
+async def get_review(review_id: int):
+    review = Review.select().where(Review.id == review_id).first()
+
+    if review is None:
+        raise HTTPException(404, "Review not found")
 
     return review
