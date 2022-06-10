@@ -1,11 +1,12 @@
 from datetime import datetime
+from decouple import config
 
 from peewee import *
 
 database = MySQLDatabase("db_movies_review",
-                         user="root",
-                         password="data1814",
-                         host="localhost", port=3306)
+                         user=config("DB_USER"),
+                         password=config("DB_PASSWORD"),
+                         host=config("DB_HOST"), port=3306)
 
 
 class User(Model):
