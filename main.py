@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from database import database as connection
 from database import User, Movie, Review
+from schemas import UserBaseModel
 
 app = FastAPI(title="Movies Reviews", description="A project where we can review movies", version="1")
 
@@ -32,5 +33,9 @@ async def say_hello(name: str):
 
 
 @app.post("/users")
-async def create_user():
-    pass
+async def create_user(user: UserBaseModel):
+    user = User.create(
+        username=user.username,
+        password=user.password
+    )
+    return user.id
