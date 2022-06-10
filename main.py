@@ -3,6 +3,16 @@ from fastapi import FastAPI
 app = FastAPI(title="Movies Reviews", description="A project where we can review movies", version="1")
 
 
+@app.on_event("startup")
+def startup():
+    print("Server is starting up...")
+
+
+@app.on_event("shutdown")
+def shutdown():
+    print("Server is shutting down...")
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
