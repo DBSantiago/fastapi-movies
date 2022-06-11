@@ -107,3 +107,18 @@ async def get_review(review_id: int):
         raise HTTPException(404, "Review not found")
 
     return review
+
+
+@app.put("/reviews/{review_id}", response_model=ReviewResponseModel)
+async def update_review(review_id: int, review_request: ReviewPutRequestModel):
+    review = Review.select().where(Review.id == review_id).first()
+
+    if review is None:
+        raise HTTPException(404, "Review not found")
+
+    review.review_text = review_request.review_text
+    review.score = review_request.score
+
+    review.save()
+
+    return review

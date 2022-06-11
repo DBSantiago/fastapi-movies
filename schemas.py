@@ -68,20 +68,20 @@ class MovieResponseModel(ResponseModel):
 # ================================
 #           REVIEW
 # ================================
-
-class ReviewRequestModel(BaseModel):
-    user_id: int
-    movie_id: int
-    review_text: str
-    score: int
-
+class ReviewValidator:
     @validator("score")
     def validate_score(cls, score):
-
         if not 1 <= score <= 5:
             raise ValueError("Score must be between 1 and 5")
 
         return score
+
+
+class ReviewRequestModel(BaseModel, ReviewValidator):
+    user_id: int
+    movie_id: int
+    review_text: str
+    score: int
 
 
 class ReviewResponseModel(ResponseModel):
@@ -92,3 +92,8 @@ class ReviewResponseModel(ResponseModel):
     class Config:
         orm_mode = True
         getter_dict = PeeweeGetterDict
+
+
+class ReviewPutRequestModel(BaseModel, ReviewValidator):
+    review_text: str
+    score: int
