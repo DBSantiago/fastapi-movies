@@ -5,7 +5,7 @@ from fastapi import HTTPException, APIRouter
 from project.schemas import ReviewResponseModel, ReviewRequestModel, ReviewPutRequestModel
 from project.database import User, Movie, Review
 
-router = APIRouter(prefix="/api/v1/reviews")
+router = APIRouter(prefix="/reviews")
 
 
 @router.post("/", response_model=ReviewResponseModel)

@@ -5,7 +5,7 @@ from fastapi import HTTPException, APIRouter
 from project.database import Movie
 from project.schemas import MovieResponseModel, MovieRequestModel
 
-router = APIRouter(prefix="/api/v1/movies")
+router = APIRouter(prefix="/movies")
 
 
 @router.post("/", response_model=MovieResponseModel)

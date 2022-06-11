@@ -3,7 +3,7 @@ from fastapi import HTTPException, APIRouter
 from project.database import User
 from project.schemas import UserResponseModel, UserRequestModel
 
-router = APIRouter(prefix="/api/v1/users")
+router = APIRouter(prefix="/users")
 
 
 @router.post("/", response_model=UserResponseModel)
