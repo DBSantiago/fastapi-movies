@@ -1,9 +1,10 @@
 from typing import List
 
-from fastapi import HTTPException, APIRouter
+from fastapi import HTTPException, APIRouter, Depends
 from fastapi import Response, Cookie
 from fastapi.security import HTTPBasicCredentials
 
+from project.common import oauth2_schema, get_current_user
 from project.database import User
 from project.schemas import UserResponseModel, UserRequestModel, ReviewResponseModel
 
@@ -39,11 +40,18 @@ async def login(credentials: HTTPBasicCredentials, response: Response):
     return user
 
 
-@router.get("/reviews", response_model=List[ReviewResponseModel])
-async def get_reviews(user_id: int = Cookie(None)):
-    user = User.select().where(User.id == user_id).first()
+# @router.get("/reviews", response_model=List[ReviewResponseModel])
+# async def get_reviews(user_id: int = Cookie(None)):
+#     user = User.select().where(User.id == user_id).first()
+#
+#     if user is None:
+#         raise HTTPException(404, "User not found")
+#
+#     return [user_review for user_review in user.reviews]
 
-    if user is None:
-        raise HTTPException(404, "User not found")
-
-    return [user_review for user_review in user.reviews]
+@router.get("/reviews")
+async def get_reviews(user: User = Depends(get_current_user)):
+    return {
+        "id": user.id,
+        "username": user.username
+    }
