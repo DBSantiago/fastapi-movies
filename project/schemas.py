@@ -78,7 +78,6 @@ class ReviewValidator:
 
 
 class ReviewRequestModel(BaseModel, ReviewValidator):
-    user_id: int
     movie_id: int
     review_text: str
     score: int
